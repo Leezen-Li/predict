@@ -1,0 +1,1901 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "默认模块",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/option/user/thirdPartyLogin": {
+      "post": {
+        "summary": "2.3 三方登录接口",
+        "deprecated": false,
+        "description": "用于同步三方用户信息\n调用时机：用户在三方平台登录成功后\n如果openId不存在，会新注册一个用户，如果存在则更新用户信息。",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "接入方apikey，联系平台提供",
+            "required": true,
+            "example": "demo_ak",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "description": "请求id，全局唯一，用于防止请求回放和问题定位",
+            "required": true,
+            "example": "fetn85bec31644e19f409e32e27c7558",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "请求时间戳,毫秒",
+            "required": true,
+            "example": 1745065812000,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "x-sign",
+            "in": "header",
+            "description": "签名，具体规则见全局约定文档",
+            "required": true,
+            "example": "a124d656bdd172d08c2d810ce0d33528cad36b2de3238497fe0cd8fca511913e",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "openId": {
+                    "type": "string",
+                    "title": "用户openId",
+                    "description": "合作方用户对外唯一id"
+                  },
+                  "nickName": {
+                    "type": "string",
+                    "title": "昵称"
+                  }
+                },
+                "required": [
+                  "openId"
+                ]
+              },
+              "example": {
+                "openId": "f22b0775442645d0ad62d1c539807b76",
+                "nickName": "allen2"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0-成功"
+                    },
+                    "message": {
+                      "type": "string",
+                      "title": "响应信息"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "nickName": {
+                          "type": "string",
+                          "title": "昵称"
+                        },
+                        "token": {
+                          "type": "string",
+                          "title": "token",
+                          "description": "后续充值，提交任务时使用"
+                        },
+                        "expiredAt": {
+                          "type": "integer",
+                          "title": "过期时间",
+                          "description": "时间戳，毫秒"
+                        },
+                        "balance": {
+                          "type": "integer",
+                          "description": "金币数，单位：分",
+                          "title": "余额"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "状态",
+                          "description": "0-待激活 1-已激活"
+                        },
+                        "vipType": {
+                          "type": "string",
+                          "title": "会员类型",
+                          "description": "Month-包月会员\nYear-年会员"
+                        },
+                        "vipValidFrom": {
+                          "type": "integer",
+                          "title": "会员有效开始时间",
+                          "description": "时间戳，毫秒"
+                        },
+                        "vipValidTo": {
+                          "type": "integer",
+                          "title": "会员过期时间",
+                          "description": "时间戳，毫秒"
+                        }
+                      },
+                      "required": [
+                        "token",
+                        "expiredAt",
+                        "balance",
+                        "status"
+                      ],
+                      "title": "响应数据"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "code": 0,
+                  "message": "success",
+                  "data": {
+                    "nickName": "allen2",
+                    "token": "yCosz8GEQN_6G3GflQ-PPGVLwiOgnhcx24wtBzEWbUGlk60wGmO9GcWvXAzD5BwGxUMyCF6t6teAOkmyN2m5Cd4q2yNOhPPrnP0_NXQ6INc=",
+                    "expiredAt": 1745678355258,
+                    "balance": 12,
+                    "status": 1,
+                    "vipType": "Month",
+                    "vipValidFrom": 1745072392000,
+                    "vipValidTo": 1753107592000
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/option/recharge/getRechargeInfo": {
+      "post": {
+        "summary": "3.1 获取充值商品信息",
+        "deprecated": false,
+        "description": "获取金币充值和会员充值商品价格等信息",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "接入方apikey，联系平台提供",
+            "required": true,
+            "example": "demo_ak",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "description": "请求id，全局唯一，用于防止请求回放和问题定位",
+            "required": true,
+            "example": "fetn85bec31644e19f409e32e27c7558",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "请求时间戳,毫秒",
+            "required": true,
+            "example": "1745080860000",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-sign",
+            "in": "header",
+            "description": "签名，具体规则见全局约定文档",
+            "required": true,
+            "example": "6ac6e3c8d02386430113a65eb68eaef9ef773ec747b8f87724c58edd06cd39ac",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "title": "用户token"
+                  },
+                  "type": {
+                    "type": "string",
+                    "title": "充值类型",
+                    "description": "coin-金币充值\nvip-会员充值\n不传返回所有商品"
+                  }
+                },
+                "required": [
+                  "token"
+                ]
+              },
+              "example": {
+                "token": "yCosz8GEQN_6G3GflQ-PPGfBqQdP8_wvOXnrQbuMPzmlk60wGmO9GcWvXAzD5BwGHhknLUjrTnCR0N3CWdYbYruNx8dwIuG5c6hzm9tKCs0="
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0-成功"
+                    },
+                    "message": {
+                      "type": "string",
+                      "title": "响应消息"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "balance": {
+                          "type": "integer",
+                          "title": "用户余额",
+                          "description": "金币数"
+                        },
+                        "productList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "title": "商品id"
+                              },
+                              "coinsNum": {
+                                "type": "integer",
+                                "title": "充值金币数",
+                                "description": "金币充值商品有值"
+                              },
+                              "giftCoinNum": {
+                                "type": "integer",
+                                "title": "赠送金币数",
+                                "description": "金币充值商品有值"
+                              },
+                              "usMoney": {
+                                "type": "integer",
+                                "title": "商品价格-美元",
+                                "description": "单位：分"
+                              },
+                              "rmbMoney": {
+                                "type": "integer",
+                                "title": "商品价格-人民币",
+                                "description": "单位：分"
+                              },
+                              "hkMoney": {
+                                "type": "integer",
+                                "title": "商品价格-港币",
+                                "description": "单位：分"
+                              },
+                              "vipType": {
+                                "type": "string",
+                                "title": "会员类型",
+                                "description": "会员充值商品有值\nMonth-包月会员\nSeason-季度会员\nHalfYear-半年会员"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "coinsNum",
+                              "giftCoinNum",
+                              "usMoney",
+                              "rmbMoney",
+                              "hkMoney"
+                            ]
+                          },
+                          "title": "充值商品列表"
+                        }
+                      },
+                      "required": [
+                        "balance",
+                        "productList"
+                      ],
+                      "title": "响应数据体"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "code": 0,
+                  "message": "success",
+                  "data": {
+                    "balance": 12,
+                    "productList": [
+                      {
+                        "id": 3,
+                        "coinsNum": 2048,
+                        "giftCoinNum": 0,
+                        "usMoney": 8560,
+                        "rmbMoney": 59900,
+                        "hkMoney": 59900
+                      },
+                      {
+                        "id": 4,
+                        "coinsNum": 4096,
+                        "giftCoinNum": 0,
+                        "usMoney": 14560,
+                        "rmbMoney": 102400,
+                        "hkMoney": 102400
+                      },
+                      {
+                        "id": 102,
+                        "coinsNum": 0,
+                        "giftCoinNum": 0,
+                        "usMoney": 2850,
+                        "rmbMoney": 19990,
+                        "hkMoney": 19990,
+                        "vipType": "Month"
+                      },
+                      {
+                        "id": 103,
+                        "coinsNum": 0,
+                        "giftCoinNum": 0,
+                        "usMoney": 7850,
+                        "rmbMoney": 54990,
+                        "hkMoney": 54990,
+                        "vipType": "Season"
+                      },
+                      {
+                        "id": 104,
+                        "coinsNum": 0,
+                        "giftCoinNum": 0,
+                        "usMoney": 14250,
+                        "rmbMoney": 99990,
+                        "hkMoney": 99990,
+                        "vipType": "HalfYear"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/option/recharge/thirdPartyOpenVip": {
+      "post": {
+        "summary": "3.2 三方开通会员接口",
+        "deprecated": false,
+        "description": "使用场景：合作方用户扣费成功后，调用该接口给用户增加会员权益",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "接入方apikey，联系平台提供",
+            "required": true,
+            "example": "demo_ak",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "description": "请求id，全局唯一，用于防止请求回放和问题定位",
+            "required": true,
+            "example": "fetn85bec31644e19f409e32e27c7558",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "请求时间戳,毫秒",
+            "required": true,
+            "example": 1745065812000,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "x-sign",
+            "in": "header",
+            "description": "签名，具体规则见全局约定文档",
+            "required": true,
+            "example": "a124d656bdd172d08c2d810ce0d33528cad36b2de3238497fe0cd8fca511913e",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "description": "用户token"
+                  },
+                  "orderId": {
+                    "type": "string",
+                    "description": "订单号，全局唯一，防止重复下单"
+                  },
+                  "productId": {
+                    "type": "integer",
+                    "description": "商品id\n102-包月会员\n103-季度会员\n104-半年度会员"
+                  },
+                  "currency": {
+                    "type": "string",
+                    "description": "支付的币种\nHKD-港币\nUSD-美元\nCNY-人名币\n"
+                  }
+                },
+                "required": [
+                  "token",
+                  "orderId",
+                  "productId",
+                  "currency"
+                ]
+              },
+              "example": {
+                "token": "yCosz8GEQN_6G3GflQ-PPGfBqQdP8_wvOXnrQbuMPzmlk60wGmO9GcWvXAzD5BwGHhknLUjrTnCR0N3CWdYbYruNx8dwIuG5c6hzm9tKCs0=",
+                "orderId": "20250419221000011",
+                "productId": 102,
+                "currency": "HKD"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0-成功\n4006-订单已存在"
+                    },
+                    "message": {
+                      "type": "string",
+                      "title": "响应信息"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "nickName": {
+                          "type": "string",
+                          "title": "昵称"
+                        },
+                        "balance": {
+                          "type": "integer",
+                          "title": "余额",
+                          "description": "金币数，单位：分"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "状态",
+                          "description": "0-待激活 1-已激活"
+                        },
+                        "hasRecharge": {
+                          "type": "boolean",
+                          "title": "是否充值过"
+                        },
+                        "vipType": {
+                          "type": "string",
+                          "title": "会员类型",
+                          "description": "Month-包月会员\nYear-年会员"
+                        },
+                        "vipValidFrom": {
+                          "type": "integer",
+                          "title": "会员有效开始时间",
+                          "description": "时间戳，单位：毫秒"
+                        },
+                        "vipValidTo": {
+                          "type": "integer",
+                          "title": "会员过期时间",
+                          "description": "时间戳，单位：毫秒"
+                        },
+                        "createTime": {
+                          "type": "integer",
+                          "title": "用户注册时间",
+                          "description": "时间戳，单位：毫秒"
+                        },
+                        "updateTime": {
+                          "type": "integer",
+                          "title": "用户更新信息",
+                          "description": "时间戳，单位：毫秒"
+                        }
+                      },
+                      "required": [
+                        "nickName",
+                        "balance",
+                        "status",
+                        "hasRecharge",
+                        "vipType",
+                        "vipValidFrom",
+                        "vipValidTo",
+                        "createTime",
+                        "updateTime"
+                      ],
+                      "title": "响应数据"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "code": 0,
+                  "message": "success",
+                  "data": {
+                    "nickName": "allen",
+                    "balance": 3,
+                    "status": 1,
+                    "hasRecharge": true,
+                    "vipType": "Month",
+                    "vipValidFrom": 1743436800000,
+                    "vipValidTo": 1746028800,
+                    "createTime": 1743436800000,
+                    "updateTime": 1744300210000
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/option/analysis/calcRealTimeTaskPrice": {
+      "post": {
+        "summary": "4.2 计算期权实时任务价格",
+        "deprecated": false,
+        "description": "点击提交按钮时，先调用该接口获取任务价格，用户确认后，再调用实时期权分析接口",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "接入方apikey，联系平台提供",
+            "required": true,
+            "example": "demo_ak",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "description": "请求id，全局唯一，用于防止请求回放和问题定位",
+            "required": true,
+            "example": "fetn85bec31644e19f409e32e27c7558",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "请求时间戳,毫秒",
+            "required": true,
+            "example": 1745065812000,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "x-sign",
+            "in": "header",
+            "description": "签名，具体规则见全局约定文档",
+            "required": true,
+            "example": "a124d656bdd172d08c2d810ce0d33528cad36b2de3238497fe0cd8fca511913e",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "integer",
+                    "description": "0-Buy Call\n1-Sell Call\n2-Buy Put\n3-Sell Put\n4-智能看涨组合\n5-智能看跌组合",
+                    "title": "类型"
+                  },
+                  "stockCodes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "股票代码"
+                  },
+                  "token": {
+                    "type": "string",
+                    "title": "用户token"
+                  },
+                  "days": {
+                    "type": "integer",
+                    "title": "查询天数"
+                  },
+                  "marketCode": {
+                    "type": "string",
+                    "title": "交易市场",
+                    "description": "US-美股\nHK-港股\n默认美股"
+                  }
+                },
+                "required": [
+                  "type",
+                  "stockCodes",
+                  "token",
+                  "days"
+                ]
+              },
+              "example": {
+                "type": 0,
+                "stockCodes": [
+                  "TSLA",
+                  "AAPL"
+                ],
+                "token": "yCosz8GEQN_6G3GflQ-PPG_BjyDEsRacHWRJYQraGfoDUVk_pJ09dHKI28-yx_ylq0jNO16zLWvn18X-LGNk1Hi9JtpT-utLbIisLEiHAwI=",
+                "days": 30,
+                "marketCode": "US"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0-成功"
+                    },
+                    "message": {
+                      "type": "string",
+                      "title": "响应信息"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "taskPrice": {
+                          "type": "integer",
+                          "title": "任务价格",
+                          "description": "金币数，单位：分"
+                        },
+                        "remainCycleCoins": {
+                          "type": "integer",
+                          "title": "当月剩余周期性金币数",
+                          "description": "针对会员场景，每月有3000金币额度"
+                        },
+                        "deductFromCycleCoins": {
+                          "type": "boolean",
+                          "title": "扣费来源",
+                          "description": "true-从周期性金币数扣减\nfalse-从余额扣减"
+                        },
+                        "vipType": {
+                          "type": "string",
+                          "description": "Month-包月会员\nYear-年会员",
+                          "title": "会员类型"
+                        },
+                        "vipValidFrom": {
+                          "type": "integer",
+                          "title": "会员有效开始时间",
+                          "description": "时间戳，毫秒"
+                        },
+                        "vipValidTo": {
+                          "type": "integer",
+                          "title": "会员过期时间",
+                          "description": "时间戳，毫秒"
+                        }
+                      },
+                      "required": [
+                        "taskPrice",
+                        "remainCycleCoins",
+                        "deductFromCycleCoins"
+                      ],
+                      "title": "响应体"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "code": 0,
+                  "message": "success",
+                  "data": {
+                    "taskPrice": 6,
+                    "remainCycleCoins": 0,
+                    "deductFromCycleCoins": false,
+                    "vipType": "Month",
+                    "vipValidFrom": 1747968997000,
+                    "vipValidTo": 1750647397000
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/option/analysis/analyzeTaskRealTime": {
+      "post": {
+        "summary": "4.3 实时分析期权接口",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "接入方apikey，联系平台提供",
+            "required": true,
+            "example": "demo_ak",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "description": "请求id，全局唯一，用于防止请求回放和问题定位",
+            "required": true,
+            "example": "fetn85bec31644e19f409e32e27c7558",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "请求时间戳,毫秒",
+            "required": true,
+            "example": 1745065812000,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "x-sign",
+            "in": "header",
+            "description": "签名，具体规则见全局约定文档",
+            "required": true,
+            "example": "a124d656bdd172d08c2d810ce0d33528cad36b2de3238497fe0cd8fca511913e",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "integer",
+                    "title": "类型",
+                    "description": "0-Buy Call\n1-Sell Call\n2-Buy Put\n3-Sell Put\n4-智能看涨组合\n5-智能看跌组合"
+                  },
+                  "stockCodes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "股票代码列表"
+                  },
+                  "token": {
+                    "type": "string",
+                    "title": "用户token"
+                  },
+                  "days": {
+                    "type": "integer",
+                    "title": "查询天数"
+                  },
+                  "marketCode": {
+                    "type": "string",
+                    "description": "US-美股\nHK-港股\n默认美股",
+                    "title": "交易市场"
+                  }
+                },
+                "required": [
+                  "type",
+                  "stockCodes",
+                  "token",
+                  "days"
+                ]
+              },
+              "example": {
+                "type": 0,
+                "stockCodes": [
+                  "TSLA",
+                  "AAPL"
+                ],
+                "token": "yCosz8GEQN_6G3GflQ-PPG_BjyDEsRacHWRJYQraGfoDUVk_pJ09dHKI28-yx_ylq0jNO16zLWvn18X-LGNk1Hi9JtpT-utLbIisLEiHAwI=",
+                "days": 30,
+                "marketCode": "US"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0-成功\n3002-任务id不存在"
+                    },
+                    "message": {
+                      "type": "string",
+                      "title": "响应信息"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "taskInfo": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "title": "任务id"
+                            },
+                            "taskPrice": {
+                              "type": "integer",
+                              "title": "任务价格"
+                            },
+                            "taskStatus": {
+                              "type": "integer",
+                              "title": "任务状态",
+                              "description": "0-已提交，10-计算中，20-计算完成，30-计算失败"
+                            },
+                            "type": {
+                              "type": "integer",
+                              "description": "0-Buy Call，1-Sell Call，2-Buy Put，3-Sell Put",
+                              "title": "类型"
+                            },
+                            "stockCodes": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
+                              "title": "股票代码"
+                            },
+                            "startDate": {
+                              "type": "string",
+                              "title": "开始日期",
+                              "description": "格式：yyyy-MM-dd"
+                            },
+                            "endDate": {
+                              "type": "string",
+                              "title": "结束日期",
+                              "description": "格式：yyyy-MM-dd"
+                            },
+                            "days": {
+                              "type": "integer",
+                              "title": "查询天数"
+                            },
+                            "waitingTime": {
+                              "type": "integer",
+                              "title": "等待时间"
+                            },
+                            "taskFinishTime": {
+                              "type": "integer",
+                              "title": "任务完成时间"
+                            },
+                            "createTime": {
+                              "type": "integer",
+                              "title": "任务创建时间"
+                            },
+                            "marketCode": {
+                              "type": "string",
+                              "title": "股票市场"
+                            },
+                            "useVip": {
+                              "type": "boolean",
+                              "title": "是否从会员额度扣费"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "taskPrice",
+                            "taskStatus",
+                            "type",
+                            "stockCodes",
+                            "startDate",
+                            "endDate",
+                            "days",
+                            "waitingTime",
+                            "taskFinishTime",
+                            "createTime",
+                            "marketCode",
+                            "useVip"
+                          ],
+                          "title": "任务信息"
+                        },
+                        "optionList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "taskId": {
+                                "type": "integer",
+                                "title": "任务id"
+                              },
+                              "remainingPeriod": {
+                                "type": "integer",
+                                "title": "剩余周期 "
+                              },
+                              "stockCode": {
+                                "type": "string",
+                                "title": "股票代码"
+                              },
+                              "optionType": {
+                                "type": "string",
+                                "title": "类型",
+                                "description": "Call/Put"
+                              },
+                              "strikePrice": {
+                                "type": "number",
+                                "title": "期权价格"
+                              },
+                              "strikeTime": {
+                                "type": "string",
+                                "title": "行权日期"
+                              },
+                              "annualizedRate": {
+                                "type": "number",
+                                "title": "年化收益率/年化成本率",
+                                "description": "在类型中选卖方Sell时叫‘年化收益率’，选买方Buy时则改为’年化成本率’"
+                              },
+                              "exerciseProbability": {
+                                "type": "number",
+                                "title": "行权概率"
+                              },
+                              "premium": {
+                                "type": "integer",
+                                "title": "权利金"
+                              },
+                              "diffRate": {
+                                "type": "number",
+                                "title": "溢价",
+                                "description": "期权价格和实际价格的差距百分比"
+                              },
+                              "score": {
+                                "type": "number",
+                                "title": "推荐值",
+                                "description": "分数越高越好"
+                              },
+                              "optCode": {
+                                "type": "string",
+                                "title": "期权编码"
+                              }
+                            },
+                            "required": [
+                              "taskId",
+                              "remainingPeriod",
+                              "stockCode",
+                              "optionType",
+                              "strikePrice",
+                              "strikeTime",
+                              "annualizedRate",
+                              "exerciseProbability",
+                              "premium",
+                              "diffRate",
+                              "score",
+                              "optCode"
+                            ]
+                          },
+                          "title": "分析结果列表"
+                        }
+                      },
+                      "required": [
+                        "taskInfo",
+                        "optionList"
+                      ],
+                      "title": "响应数据体"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "code": 0,
+                  "message": "success",
+                  "data": {
+                    "taskInfo": {
+                      "id": 10954,
+                      "taskPrice": 6,
+                      "taskStatus": 20,
+                      "type": 0,
+                      "stockCodes": [
+                        "TSLA",
+                        "AAPL"
+                      ],
+                      "startDate": "2025-04-11",
+                      "endDate": "2025-05-11",
+                      "days": 30,
+                      "waitingTime": 0,
+                      "taskFinishTime": 0,
+                      "createTime": 1744300826000,
+                      "marketCode": "US",
+                      "useVip": false
+                    },
+                    "optionList": [
+                      {
+                        "taskId": 10954,
+                        "remainingPeriod": 3,
+                        "stockCode": "AAPL",
+                        "optionType": "0",
+                        "strikePrice": 187.5,
+                        "strikeTime": "2025-04-25",
+                        "annualizedRate": 82.24,
+                        "exerciseProbability": 46.78,
+                        "premium": 905,
+                        "diffRate": 0.23,
+                        "score": 205,
+                        "optCode": "AAPL250620C200000"
+                      },
+                      {
+                        "taskId": 10954,
+                        "remainingPeriod": 5,
+                        "stockCode": "TSLA",
+                        "optionType": "0",
+                        "strikePrice": 245,
+                        "strikeTime": "2025-05-09",
+                        "annualizedRate": 112.31,
+                        "exerciseProbability": 44.95,
+                        "premium": 2760,
+                        "diffRate": -0.3,
+                        "score": 191.93,
+                        "optCode": "AAPL250620C200001"
+                      },
+                      {
+                        "taskId": 10954,
+                        "remainingPeriod": 1,
+                        "stockCode": "TSLA",
+                        "optionType": "0",
+                        "strikePrice": 245,
+                        "strikeTime": "2025-04-11",
+                        "annualizedRate": 167.17,
+                        "exerciseProbability": 50.04,
+                        "premium": 790,
+                        "diffRate": -0.3,
+                        "score": 180.69,
+                        "optCode": "AAPL250620C200002"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/option/analysis/thirdPartySubmitTask": {
+      "post": {
+        "summary": "4.4 三方期权分析任务提交接口",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "接入方apikey，联系平台提供",
+            "required": true,
+            "example": "demo_ak",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "description": "请求id，全局唯一，用于防止请求回放和问题定位",
+            "required": true,
+            "example": "fetn85bec31644e19f409e32e27c7558",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "请求时间戳,毫秒",
+            "required": true,
+            "example": 1745115706872,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "x-sign",
+            "in": "header",
+            "description": "签名，具体规则见全局约定文档",
+            "required": true,
+            "example": "a124d656bdd172d08c2d810ce0d33528cad36b2de3238497fe0cd8fca511913e",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "integer",
+                    "title": "类型",
+                    "description": "0-Buy Call\n1-Sell Call\n2-Buy Put\n3-Sell Put"
+                  },
+                  "stockCodes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "股票代码列表"
+                  },
+                  "token": {
+                    "type": "string",
+                    "title": "用户token"
+                  },
+                  "days": {
+                    "type": "integer",
+                    "title": "查询天数"
+                  },
+                  "marketCode": {
+                    "type": "string",
+                    "description": "US-美股\nHK-港股\n默认美股",
+                    "title": "交易市场"
+                  }
+                },
+                "required": [
+                  "type",
+                  "stockCodes",
+                  "token",
+                  "days"
+                ]
+              },
+              "example": {
+                "type": 0,
+                "stockCodes": [
+                  "TSLA",
+                  "AAPL"
+                ],
+                "token": "yCosz8GEQN_6G3GflQ-PPG_BjyDEsRacHWRJYQraGfoDUVk_pJ09dHKI28-yx_ylq0jNO16zLWvn18X-LGNk1Hi9JtpT-utLbIisLEiHAwI=",
+                "days": 30,
+                "marketCode": "US"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0-成功\n3001-余额不足"
+                    },
+                    "message": {
+                      "type": "string",
+                      "title": "响应信息"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "taskId": {
+                          "type": "integer",
+                          "title": "任务id",
+                          "description": "后续可以通过任务id查询分析结果"
+                        }
+                      },
+                      "required": [
+                        "taskId"
+                      ],
+                      "title": "响应体"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "code": 0,
+                  "message": "success",
+                  "data": {
+                    "taskId": 10954
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/option/analysis/getTaskResult": {
+      "post": {
+        "summary": "5.1 查询期权分析结果",
+        "deprecated": false,
+        "description": "用于查询历史任务的期权分析结果。先调用5.2历史任务查询接口，获取任务id，再通过该接口查询指定任务的分析结果",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "接入方apikey，联系平台提供",
+            "required": true,
+            "example": "demo_ak",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "description": "请求id，全局唯一，用于防止请求回放和问题定位",
+            "required": true,
+            "example": "fetn85bec31644e19f409e32e27c7558",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "请求时间戳,毫秒",
+            "required": true,
+            "example": 1745065812000,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "x-sign",
+            "in": "header",
+            "description": "签名，具体规则见全局约定文档",
+            "required": true,
+            "example": "a124d656bdd172d08c2d810ce0d33528cad36b2de3238497fe0cd8fca511913e",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "taskId": {
+                    "type": "integer",
+                    "title": "任务id",
+                    "description": "提交任务时返回的id"
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "用户token"
+                  }
+                },
+                "required": [
+                  "taskId",
+                  "token"
+                ]
+              },
+              "example": {
+                "taskId": 10954,
+                "token": "yCosz8GEQN_6G3GflQ-PPG_BjyDEsRacHWRJYQraGfoDUVk_pJ09dHKI28-yx_ylq0jNO16zLWvn18X-LGNk1Hi9JtpT-utLbIisLEiHAwI="
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0-成功\n3002-任务id不存在"
+                    },
+                    "message": {
+                      "type": "string",
+                      "title": "响应信息"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "taskInfo": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "title": "任务id"
+                            },
+                            "taskPrice": {
+                              "type": "integer",
+                              "title": "任务价格"
+                            },
+                            "taskStatus": {
+                              "type": "integer",
+                              "title": "任务状态",
+                              "description": "0-已提交，10-计算中，20-计算完成，30-计算失败"
+                            },
+                            "type": {
+                              "type": "integer",
+                              "description": "0-Buy Call，1-Sell Call，2-Buy Put，3-Sell Put",
+                              "title": "类型"
+                            },
+                            "stockCodes": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
+                              "title": "股票代码"
+                            },
+                            "startDate": {
+                              "type": "string",
+                              "title": "开始日期",
+                              "description": "格式：yyyy-MM-dd"
+                            },
+                            "endDate": {
+                              "type": "string",
+                              "title": "结束日期",
+                              "description": "格式：yyyy-MM-dd"
+                            },
+                            "days": {
+                              "type": "integer",
+                              "title": "查询天数"
+                            },
+                            "waitingTime": {
+                              "type": "integer",
+                              "title": "等待时间"
+                            },
+                            "taskFinishTime": {
+                              "type": "integer",
+                              "title": "任务完成时间"
+                            },
+                            "createTime": {
+                              "type": "integer",
+                              "title": "任务创建时间"
+                            },
+                            "marketCode": {
+                              "type": "string",
+                              "title": "股票市场"
+                            },
+                            "useVip": {
+                              "type": "boolean",
+                              "title": "是否从会员额度扣费"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "taskPrice",
+                            "taskStatus",
+                            "type",
+                            "stockCodes",
+                            "startDate",
+                            "endDate",
+                            "days",
+                            "waitingTime",
+                            "taskFinishTime",
+                            "createTime",
+                            "marketCode",
+                            "useVip"
+                          ],
+                          "title": "任务信息"
+                        },
+                        "optionList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "taskId": {
+                                "type": "integer",
+                                "title": "任务id"
+                              },
+                              "remainingPeriod": {
+                                "type": "integer",
+                                "title": "剩余周期 "
+                              },
+                              "stockCode": {
+                                "type": "string",
+                                "title": "股票代码"
+                              },
+                              "optionType": {
+                                "type": "string",
+                                "title": "类型",
+                                "description": "Call/Put"
+                              },
+                              "strikePrice": {
+                                "type": "number",
+                                "title": "期权价格"
+                              },
+                              "strikeTime": {
+                                "type": "string",
+                                "title": "行权日期"
+                              },
+                              "annualizedRate": {
+                                "type": "number",
+                                "title": "年化收益率/年化成本率",
+                                "description": "在类型中选卖方Sell时叫‘年化收益率’，选买方Buy时则改为’年化成本率’"
+                              },
+                              "exerciseProbability": {
+                                "type": "number",
+                                "title": "行权概率"
+                              },
+                              "premium": {
+                                "type": "integer",
+                                "title": "权利金"
+                              },
+                              "diffRate": {
+                                "type": "number",
+                                "title": "溢价",
+                                "description": "期权价格和实际价格的差距百分比"
+                              },
+                              "score": {
+                                "type": "number",
+                                "title": "推荐值",
+                                "description": "分数越高越好"
+                              }
+                            },
+                            "required": [
+                              "taskId",
+                              "remainingPeriod",
+                              "stockCode",
+                              "optionType",
+                              "strikePrice",
+                              "strikeTime",
+                              "annualizedRate",
+                              "exerciseProbability",
+                              "premium",
+                              "diffRate",
+                              "score"
+                            ]
+                          },
+                          "title": "分析结果列表"
+                        }
+                      },
+                      "required": [
+                        "taskInfo",
+                        "optionList"
+                      ],
+                      "title": "响应数据体"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "code": 0,
+                  "message": "success",
+                  "data": {
+                    "taskInfo": {
+                      "id": 10954,
+                      "taskPrice": 6,
+                      "taskStatus": 20,
+                      "type": 0,
+                      "stockCodes": [
+                        "TSLA",
+                        "AAPL"
+                      ],
+                      "startDate": "2025-04-11",
+                      "endDate": "2025-05-11",
+                      "days": 30,
+                      "waitingTime": 0,
+                      "taskFinishTime": 0,
+                      "createTime": 1744300826000,
+                      "marketCode": "US",
+                      "useVip": false
+                    },
+                    "optionList": [
+                      {
+                        "taskId": 10954,
+                        "remainingPeriod": 3,
+                        "stockCode": "AAPL",
+                        "optionType": "0",
+                        "strikePrice": 187.5,
+                        "strikeTime": "2025-04-25",
+                        "annualizedRate": 82.24,
+                        "exerciseProbability": 46.78,
+                        "premium": 905,
+                        "diffRate": 0.23,
+                        "score": 205
+                      },
+                      {
+                        "taskId": 10954,
+                        "remainingPeriod": 5,
+                        "stockCode": "TSLA",
+                        "optionType": "0",
+                        "strikePrice": 245,
+                        "strikeTime": "2025-05-09",
+                        "annualizedRate": 112.31,
+                        "exerciseProbability": 44.95,
+                        "premium": 2760,
+                        "diffRate": -0.3,
+                        "score": 191.93
+                      },
+                      {
+                        "taskId": 10954,
+                        "remainingPeriod": 1,
+                        "stockCode": "TSLA",
+                        "optionType": "0",
+                        "strikePrice": 245,
+                        "strikeTime": "2025-04-11",
+                        "annualizedRate": 167.17,
+                        "exerciseProbability": 50.04,
+                        "premium": 790,
+                        "diffRate": -0.3,
+                        "score": 180.69
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/option/analysis/getHistoryTasks": {
+      "post": {
+        "summary": "5.2  历史任务查询接口",
+        "deprecated": false,
+        "description": "查询用户提交的历史任务列表",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "接入方apikey，联系平台提供",
+            "required": true,
+            "example": "demo_ak",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "description": "请求id，全局唯一，用于防止请求回放和问题定位",
+            "required": true,
+            "example": "fetn85bec31644e19f409e32e27c7558",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "请求时间戳,毫秒",
+            "required": true,
+            "example": 1745065812000,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "x-sign",
+            "in": "header",
+            "description": "签名，具体规则见全局约定文档",
+            "required": true,
+            "example": "a124d656bdd172d08c2d810ce0d33528cad36b2de3238497fe0cd8fca511913e",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "title": "用户token"
+                  },
+                  "marketCode": {
+                    "type": "string",
+                    "description": "US-美股\nHK-港股",
+                    "title": "股票市场"
+                  },
+                  "page": {
+                    "type": "integer",
+                    "title": "页码",
+                    "description": "从1开始，默认1"
+                  },
+                  "pageSize": {
+                    "type": "integer",
+                    "title": "每页记录数",
+                    "description": "默认200"
+                  }
+                },
+                "required": [
+                  "token"
+                ]
+              },
+              "example": {
+                "token": "yCosz8GEQN_6G3GflQ-PPG_BjyDEsRacHWRJYQraGfoDUVk_pJ09dHKI28-yx_ylq0jNO16zLWvn18X-LGNk1Hi9JtpT-utLbIisLEiHAwI=",
+                "marketCode": "US",
+                "page": 1,
+                "pageSize": 20
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0-成功"
+                    },
+                    "message": {
+                      "type": "string",
+                      "title": "响应信息"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "taskList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "title": "任务id"
+                              },
+                              "taskPrice": {
+                                "type": "integer",
+                                "title": "任务价格"
+                              },
+                              "taskStatus": {
+                                "type": "integer",
+                                "title": "任务状态",
+                                "description": "0-已提交，10-计算中，20-计算完成，30-计算失败"
+                              },
+                              "type": {
+                                "type": "integer",
+                                "description": "0-Buy Call，1-Sell Call，2-Buy Put，3-Sell Put",
+                                "title": "类型"
+                              },
+                              "stockCodes": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "title": "股票代码"
+                              },
+                              "startDate": {
+                                "type": "string",
+                                "title": "开始日期"
+                              },
+                              "endDate": {
+                                "type": "string",
+                                "title": "结束日期"
+                              },
+                              "days": {
+                                "type": "integer",
+                                "title": "查询天数"
+                              },
+                              "waitingTime": {
+                                "type": "integer",
+                                "title": "等待时间",
+                                "description": "单位：秒"
+                              },
+                              "taskFinishTime": {
+                                "type": "integer",
+                                "title": "任务预计完成时间",
+                                "description": "单位：秒"
+                              },
+                              "createTime": {
+                                "type": "integer",
+                                "title": "任务创建时间",
+                                "description": "时间戳，单位：毫秒"
+                              },
+                              "marketCode": {
+                                "type": "string",
+                                "title": "股票市场",
+                                "description": "US-美股\nHK-港股"
+                              },
+                              "useVip": {
+                                "type": "boolean",
+                                "title": "是否使用vip提交任务"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "taskPrice",
+                              "taskStatus",
+                              "type",
+                              "stockCodes",
+                              "startDate",
+                              "endDate",
+                              "days",
+                              "waitingTime",
+                              "taskFinishTime",
+                              "createTime",
+                              "marketCode",
+                              "useVip"
+                            ]
+                          },
+                          "title": "历史任务列表"
+                        }
+                      },
+                      "required": [
+                        "taskList"
+                      ],
+                      "title": "响应体"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "code": 0,
+                  "message": "success",
+                  "data": {
+                    "taskList": [
+                      {
+                        "id": 11003,
+                        "taskPrice": 6,
+                        "taskStatus": 20,
+                        "type": 0,
+                        "stockCodes": [
+                          "TSLA",
+                          "AAPL"
+                        ],
+                        "startDate": "2025-04-11",
+                        "endDate": "2025-05-11",
+                        "days": 30,
+                        "waitingTime": 0,
+                        "taskFinishTime": 0,
+                        "createTime": 1744384085000,
+                        "marketCode": "US",
+                        "useVip": false
+                      },
+                      {
+                        "id": 10954,
+                        "taskPrice": 6,
+                        "taskStatus": 20,
+                        "type": 0,
+                        "stockCodes": [
+                          "TSLA",
+                          "AAPL"
+                        ],
+                        "startDate": "2025-04-11",
+                        "endDate": "2025-05-11",
+                        "days": 30,
+                        "waitingTime": 0,
+                        "taskFinishTime": 0,
+                        "createTime": 1744300826000,
+                        "marketCode": "US",
+                        "useVip": false
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "responses": {},
+    "securitySchemes": {}
+  },
+  "servers": [],
+  "security": []
+}

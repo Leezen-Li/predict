@@ -1,0 +1,1120 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "默认模块",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/option/game/queryRealTimePrice": {
+      "post": {
+        "summary": "6.1 期权实时价格查询",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "接入方apikey，联系平台提供",
+            "required": true,
+            "example": "demo_ak",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "description": "请求id，全局唯一，用于防止请求回放和问题定位",
+            "required": true,
+            "example": "fetn85bec31644e19f409e32e27c7558",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "请求时间戳,毫秒",
+            "required": true,
+            "example": 1745115706872,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "x-sign",
+            "in": "header",
+            "description": "签名，具体规则见全局约定文档",
+            "required": true,
+            "example": "a124d656bdd172d08c2d810ce0d33528cad36b2de3238497fe0cd8fca511913e",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "stock": {
+                    "type": "string",
+                    "title": "股票代码"
+                  }
+                },
+                "required": [
+                  "stock"
+                ]
+              },
+              "example": {
+                "stock": "NVDA"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "priceNow": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "priceNow"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "code": 0,
+                  "message": "success",
+                  "data": {
+                    "priceNow": 188.655
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/option/game/fetchUSStockKLine": {
+      "post": {
+        "summary": "6.2 查询股票k线图",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "接入方apikey，联系平台提供",
+            "required": true,
+            "example": "demo_ak",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "description": "请求id，全局唯一，用于防止请求回放和问题定位",
+            "required": true,
+            "example": "fetn85bec31644e19f409e32e27c7558",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "请求时间戳,毫秒",
+            "required": true,
+            "example": 1745115706872,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "x-sign",
+            "in": "header",
+            "description": "签名，具体规则见全局约定文档",
+            "required": true,
+            "example": "a124d656bdd172d08c2d810ce0d33528cad36b2de3238497fe0cd8fca511913e",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "stock": {
+                    "type": "string",
+                    "title": "股票代码"
+                  }
+                },
+                "required": [
+                  "stock"
+                ]
+              },
+              "example": {
+                "stock": "NVDA"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "dayKLines": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "stock": {
+                                "type": "string"
+                              },
+                              "open": {
+                                "type": "number"
+                              },
+                              "close": {
+                                "type": "number"
+                              },
+                              "high": {
+                                "type": "number"
+                              },
+                              "low": {
+                                "type": "number"
+                              },
+                              "date": {
+                                "type": "string"
+                              },
+                              "volume": {
+                                "type": "integer"
+                              },
+                              "changeVolumeRate": {
+                                "type": "integer"
+                              },
+                              "pe": {
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "stock",
+                              "open",
+                              "close",
+                              "high",
+                              "low",
+                              "date",
+                              "volume",
+                              "changeVolumeRate",
+                              "pe"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "dayKLines"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "code": 0,
+                  "message": "success",
+                  "data": {
+                    "dayKLines": [
+                      {
+                        "id": 0,
+                        "stock": "NVDA",
+                        "open": 123.04,
+                        "close": 124.609,
+                        "high": 124.959,
+                        "low": 118.061,
+                        "date": "2025-01-29T16:00:00.000+00:00",
+                        "volume": 392925469,
+                        "changeVolumeRate": 0,
+                        "pe": 0
+                      },
+                      {
+                        "id": 0,
+                        "stock": "NVDA",
+                        "open": 123.769,
+                        "close": 120.031,
+                        "high": 127.808,
+                        "low": 119.151,
+                        "date": "2025-01-30T16:00:00.000+00:00",
+                        "volume": 390372899,
+                        "changeVolumeRate": 0,
+                        "pe": 0
+                      },
+                      {
+                        "id": 0,
+                        "stock": "NVDA",
+                        "open": 114.712,
+                        "close": 116.622,
+                        "high": 118.531,
+                        "low": 112.973,
+                        "date": "2025-02-02T16:00:00.000+00:00",
+                        "volume": 371235677,
+                        "changeVolumeRate": 0,
+                        "pe": 0
+                      },
+                      {
+                        "id": 0,
+                        "stock": "NVDA",
+                        "open": 116.902,
+                        "close": 118.611,
+                        "high": 121.16,
+                        "low": 116.662,
+                        "date": "2025-02-03T16:00:00.000+00:00",
+                        "volume": 256550040,
+                        "changeVolumeRate": 0,
+                        "pe": 0
+                      },
+                      {
+                        "id": 0,
+                        "stock": "NVDA",
+                        "open": 121.713,
+                        "close": 124.789,
+                        "high": 124.959,
+                        "low": 120.72,
+                        "date": "2025-02-04T16:00:00.000+00:00",
+                        "volume": 263110629,
+                        "changeVolumeRate": 0,
+                        "pe": 0
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/option/game/fetchUSOptionChain": {
+      "post": {
+        "summary": "6.3 查询期权链",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "接入方apikey，联系平台提供",
+            "required": true,
+            "example": "demo_ak",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "description": "请求id，全局唯一，用于防止请求回放和问题定位",
+            "required": true,
+            "example": "fetn85bec31644e19f409e32e27c7558",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "请求时间戳,毫秒",
+            "required": true,
+            "example": 1745115706872,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "x-sign",
+            "in": "header",
+            "description": "签名，具体规则见全局约定文档",
+            "required": true,
+            "example": "a124d656bdd172d08c2d810ce0d33528cad36b2de3238497fe0cd8fca511913e",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "stock": {
+                    "type": "string",
+                    "title": "股票代码"
+                  },
+                  "howManyMonths": {
+                    "type": "integer",
+                    "title": "查询月份数"
+                  },
+                  "call": {
+                    "type": "boolean",
+                    "title": "是否为call"
+                  }
+                },
+                "required": [
+                  "stock",
+                  "howManyMonths",
+                  "call"
+                ]
+              },
+              "example": {
+                "stock": "NVDA",
+                "howManyMonths": 1,
+                "call": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "optionDataSet": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "stock": {
+                                "type": "string"
+                              },
+                              "optionCode": {
+                                "type": "string"
+                              },
+                              "strikePrice": {
+                                "type": "integer"
+                              },
+                              "type": {
+                                "type": "string"
+                              },
+                              "askPrice": {
+                                "type": "number"
+                              },
+                              "bidPrice": {
+                                "type": "number"
+                              },
+                              "contractSize": {
+                                "type": "integer"
+                              },
+                              "strikeTime": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "stock",
+                              "optionCode",
+                              "strikePrice",
+                              "type",
+                              "askPrice",
+                              "bidPrice",
+                              "contractSize",
+                              "strikeTime"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "optionDataSet"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "code": 0,
+                  "message": "success",
+                  "data": {
+                    "optionDataSet": [
+                      {
+                        "stock": "NVDA",
+                        "optionCode": "NVDA260424C70000",
+                        "strikePrice": 70,
+                        "type": "CALL",
+                        "askPrice": 119.65,
+                        "bidPrice": 114.7,
+                        "contractSize": 100,
+                        "strikeTime": "20260424"
+                      },
+                      {
+                        "stock": "NVDA",
+                        "optionCode": "NVDA260413C187500",
+                        "strikePrice": 187.5,
+                        "type": "CALL",
+                        "askPrice": 2.21,
+                        "bidPrice": 2.16,
+                        "contractSize": 100,
+                        "strikeTime": "20260413"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/option/game/listStockBuyCallPercentAdv": {
+      "post": {
+        "summary": "6.4 查询buyCall组合方案",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "接入方apikey，联系平台提供",
+            "required": true,
+            "example": "demo_ak",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "description": "请求id，全局唯一，用于防止请求回放和问题定位",
+            "required": true,
+            "example": "fetn85bec31644e19f409e32e27c7558",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "请求时间戳,毫秒",
+            "required": true,
+            "example": 1745115706872,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "x-sign",
+            "in": "header",
+            "description": "签名，具体规则见全局约定文档",
+            "required": true,
+            "example": "a124d656bdd172d08c2d810ce0d33528cad36b2de3238497fe0cd8fca511913e",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "stock": {
+                    "type": "string",
+                    "title": "股票代码"
+                  },
+                  "percent": {
+                    "type": "number",
+                    "title": "股票涨幅"
+                  },
+                  "howManyMonths": {
+                    "type": "integer",
+                    "title": "查询月份数"
+                  }
+                },
+                "required": [
+                  "stock",
+                  "percent",
+                  "howManyMonths"
+                ]
+              },
+              "example": {
+                "stock": "NVDA",
+                "howManyMonths": 1,
+                "percent": 10.5
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "buyCallResults": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "stock": {
+                                  "type": "string"
+                                },
+                                "StrikeDate": {
+                                  "type": "string"
+                                },
+                                "nowPrice": {
+                                  "type": "number"
+                                },
+                                "planPrice": {
+                                  "type": "number"
+                                },
+                                "probability": {
+                                  "type": "number"
+                                },
+                                "cost": {
+                                  "type": "integer"
+                                },
+                                "maxEarn": {
+                                  "type": "number"
+                                },
+                                "roi": {
+                                  "type": "number"
+                                },
+                                "buyDescription": {
+                                  "type": "string"
+                                },
+                                "sellDescription": {
+                                  "type": "string"
+                                },
+                                "power": {
+                                  "type": "number"
+                                },
+                                "balancePrice": {
+                                  "type": "number"
+                                },
+                                "days": {
+                                  "type": "integer"
+                                },
+                                "markGood": {
+                                  "type": "boolean"
+                                },
+                                "mark": {
+                                  "type": "integer"
+                                },
+                                "weekWaveInExpectProb": {
+                                  "type": "integer"
+                                },
+                                "strikeDate": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "stock",
+                                "StrikeDate",
+                                "nowPrice",
+                                "planPrice",
+                                "probability",
+                                "cost",
+                                "maxEarn",
+                                "roi",
+                                "buyDescription",
+                                "sellDescription",
+                                "power",
+                                "balancePrice",
+                                "days",
+                                "markGood",
+                                "mark",
+                                "weekWaveInExpectProb",
+                                "strikeDate"
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "buyCallResults"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "code": 0,
+                  "message": "success",
+                  "data": {
+                    "buyCallResults": [
+                      [
+                        {
+                          "stock": "NVDA",
+                          "StrikeDate": "20260413",
+                          "nowPrice": 188.655,
+                          "planPrice": 208.463775,
+                          "probability": 0.057867244534018814,
+                          "cost": 221,
+                          "maxEarn": 1980.8774999999996,
+                          "roi": 7.96324660633484,
+                          "buyDescription": "BUY|20260413|187.5|CALL|2.21",
+                          "sellDescription": "",
+                          "power": 125.10800428665921,
+                          "balancePrice": 189.71,
+                          "days": 1,
+                          "markGood": true,
+                          "mark": 3,
+                          "weekWaveInExpectProb": 0,
+                          "strikeDate": "20260413"
+                        },
+                        {
+                          "stock": "NVDA",
+                          "StrikeDate": "20260415",
+                          "nowPrice": 188.655,
+                          "planPrice": 208.463775,
+                          "probability": 0.043638429615507957,
+                          "cost": 315,
+                          "maxEarn": 1980.8774999999996,
+                          "roi": 5.288499999999999,
+                          "buyDescription": "BUY|20260415|187.5|CALL|3.15",
+                          "sellDescription": "",
+                          "power": 73.95666315024715,
+                          "balancePrice": 190.65,
+                          "days": 3,
+                          "markGood": false,
+                          "mark": 0,
+                          "weekWaveInExpectProb": 0,
+                          "strikeDate": "20260415"
+                        }
+                      ],
+                      [
+                        {
+                          "stock": "NVDA",
+                          "StrikeDate": "20260413",
+                          "nowPrice": 193.60719375000002,
+                          "planPrice": 208.463775,
+                          "probability": 0.057867244534018814,
+                          "cost": 31,
+                          "maxEarn": 1980.8774999999996,
+                          "roi": 62.89927419354837,
+                          "buyDescription": "BUY|20260413|192.5|CALL|0.31",
+                          "sellDescription": "",
+                          "power": 252.7577072657604,
+                          "balancePrice": 192.81,
+                          "days": 1,
+                          "markGood": false,
+                          "mark": 0,
+                          "weekWaveInExpectProb": 0,
+                          "strikeDate": "20260413"
+                        },
+                        {
+                          "stock": "NVDA",
+                          "StrikeDate": "20260415",
+                          "nowPrice": 193.60719375000002,
+                          "planPrice": 208.463775,
+                          "probability": 0.043638429615507957,
+                          "cost": 94,
+                          "maxEarn": 1980.8774999999996,
+                          "roi": 20.073164893617015,
+                          "buyDescription": "BUY|20260415|192.5|CALL|0.94",
+                          "sellDescription": "",
+                          "power": 107.88131878962659,
+                          "balancePrice": 193.44,
+                          "days": 3,
+                          "markGood": false,
+                          "mark": 0,
+                          "weekWaveInExpectProb": 0,
+                          "strikeDate": "20260415"
+                        }
+                      ]
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/option/game/listStockBuyPutPercentAdv": {
+      "post": {
+        "summary": "6.5 查询BuyPut组合方案",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "接入方apikey，联系平台提供",
+            "required": true,
+            "example": "demo_ak",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "description": "请求id，全局唯一，用于防止请求回放和问题定位",
+            "required": true,
+            "example": "fetn85bec31644e19f409e32e27c7558",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-timestamp",
+            "in": "header",
+            "description": "请求时间戳,毫秒",
+            "required": true,
+            "example": 1745115706872,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "x-sign",
+            "in": "header",
+            "description": "签名，具体规则见全局约定文档",
+            "required": true,
+            "example": "a124d656bdd172d08c2d810ce0d33528cad36b2de3238497fe0cd8fca511913e",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "stock": {
+                    "type": "string",
+                    "title": "股票代码"
+                  },
+                  "percent": {
+                    "type": "number",
+                    "title": "股票涨幅"
+                  },
+                  "howManyMonths": {
+                    "type": "integer",
+                    "title": "查询月份数"
+                  }
+                },
+                "required": [
+                  "stock",
+                  "percent",
+                  "howManyMonths"
+                ]
+              },
+              "example": {
+                "stock": "NVDA",
+                "howManyMonths": 1,
+                "percent": 10.5
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "buyPutResults": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "stock": {
+                                  "type": "string"
+                                },
+                                "StrikeDate": {
+                                  "type": "string"
+                                },
+                                "nowPrice": {
+                                  "type": "number"
+                                },
+                                "planPrice": {
+                                  "type": "number"
+                                },
+                                "probability": {
+                                  "type": "number"
+                                },
+                                "cost": {
+                                  "type": "number"
+                                },
+                                "maxEarn": {
+                                  "type": "number"
+                                },
+                                "roi": {
+                                  "type": "number"
+                                },
+                                "buyDescription": {
+                                  "type": "string"
+                                },
+                                "sellDescription": {
+                                  "type": "string"
+                                },
+                                "power": {
+                                  "type": "number"
+                                },
+                                "balancePrice": {
+                                  "type": "number"
+                                },
+                                "days": {
+                                  "type": "integer"
+                                },
+                                "markGood": {
+                                  "type": "boolean"
+                                },
+                                "mark": {
+                                  "type": "integer"
+                                },
+                                "weekWaveInExpectProb": {
+                                  "type": "integer"
+                                },
+                                "strikeDate": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "stock",
+                                "StrikeDate",
+                                "nowPrice",
+                                "planPrice",
+                                "probability",
+                                "cost",
+                                "maxEarn",
+                                "roi",
+                                "buyDescription",
+                                "sellDescription",
+                                "power",
+                                "balancePrice",
+                                "days",
+                                "markGood",
+                                "mark",
+                                "weekWaveInExpectProb",
+                                "strikeDate"
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "buyPutResults"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "code": 0,
+                  "message": "success",
+                  "data": {
+                    "buyPutResults": [
+                      [
+                        {
+                          "stock": "NVDA",
+                          "StrikeDate": "20260413",
+                          "nowPrice": 188.655,
+                          "planPrice": 168.846225,
+                          "probability": 0.04259113586113611,
+                          "cost": 224.00000000000003,
+                          "maxEarn": 1980.8774999999996,
+                          "roi": 7.843203124999997,
+                          "buyDescription": "BUY|20260413|190.0|PUT|2.24",
+                          "sellDescription": "",
+                          "power": 96.18006086227568,
+                          "balancePrice": 187.76,
+                          "days": 1,
+                          "markGood": false,
+                          "mark": 0,
+                          "weekWaveInExpectProb": 0,
+                          "strikeDate": "20260413"
+                        },
+                        {
+                          "stock": "NVDA",
+                          "StrikeDate": "20260415",
+                          "nowPrice": 188.655,
+                          "planPrice": 168.846225,
+                          "probability": 0.024688832092682245,
+                          "cost": 310,
+                          "maxEarn": 1980.8774999999996,
+                          "roi": 5.389927419354837,
+                          "buyDescription": "BUY|20260415|190.0|PUT|3.1",
+                          "sellDescription": "",
+                          "power": 42.281020245798146,
+                          "balancePrice": 186.9,
+                          "days": 3,
+                          "markGood": false,
+                          "mark": 0,
+                          "weekWaveInExpectProb": 0,
+                          "strikeDate": "20260415"
+                        }
+                      ],
+                      [
+                        {
+                          "stock": "NVDA",
+                          "StrikeDate": "20260413",
+                          "nowPrice": 183.70280625,
+                          "planPrice": 168.846225,
+                          "probability": 0.04259113586113611,
+                          "cost": 18,
+                          "maxEarn": 1980.8774999999996,
+                          "roi": 109.04874999999998,
+                          "buyDescription": "BUY|20260413|182.5|PUT|0.18",
+                          "sellDescription": "",
+                          "power": 192.0403888670125,
+                          "balancePrice": 182.32,
+                          "days": 1,
+                          "markGood": false,
+                          "mark": 0,
+                          "weekWaveInExpectProb": 0,
+                          "strikeDate": "20260413"
+                        },
+                        {
+                          "stock": "NVDA",
+                          "StrikeDate": "20260415",
+                          "nowPrice": 183.70280625,
+                          "planPrice": 168.846225,
+                          "probability": 0.024688832092682245,
+                          "cost": 62,
+                          "maxEarn": 1980.8774999999996,
+                          "roi": 30.949637096774186,
+                          "buyDescription": "BUY|20260415|182.5|PUT|0.62",
+                          "sellDescription": "",
+                          "power": 66.70753047941187,
+                          "balancePrice": 181.88,
+                          "days": 3,
+                          "markGood": false,
+                          "mark": 0,
+                          "weekWaveInExpectProb": 0,
+                          "strikeDate": "20260415"
+                        }
+                      ]
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "responses": {},
+    "securitySchemes": {}
+  },
+  "servers": [],
+  "security": []
+}

@@ -1,0 +1,17 @@
+{
+    "name": "@repo/api",
+    "version": "0.0.0",
+    "private": true,
+    "exports": {
+        "./bestopts/*": "./bestopts/clients/*"
+    },
+    "scripts": {
+        "lint": "eslint . --max-warnings 0",
+        "generate:component": "turbo gen react-component",
+        "check-types": "tsc --noEmit",
+        "fetch:bestopts": "node bestopts/scripts/fetch.js"
+    },
+    "devDependencies": {
+        "@hey-api/openapi-ts": "^0.96.0"
+    }
+}
