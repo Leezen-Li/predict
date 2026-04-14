@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "private": true,
     "exports": {
-        "./bestopts/*": "./bestopts/clients/*"
+        "./bestopts/*": "./src/bestopts/clients/*"
     },
     "scripts": {
         "lint": "eslint . --max-warnings 0",
